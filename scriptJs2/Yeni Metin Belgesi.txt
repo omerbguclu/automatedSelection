@@ -1,0 +1,42 @@
+var data = new Array();
+var count = 0
+
+console.log(data)
+
+
+
+function myFunction(){
+  data[count++] = ""+ count ;
+};
+
+function myData(){
+  
+  data.forEach(function(element){
+    $('#msg').html(data[element]);
+    console.log(element);
+  });
+
+};
+$(".innerTable tr:last").after("<tr><td><input></td><td>X</td><td>X</td><td>X</td></tr>");
+function addColumn(){
+  $(".innerTable tr:last").after("<td><input></td>");
+};
+
+function addRow(){
+  var count = 1;
+  first_row = $('.firstRow');
+  while(count-- > 0){
+    first_row.clone().appendTo('.innerTable');
+  }
+};
+
+                $('#btnAdd').click(function () {
+                    var count = 1,
+                        first_row = $('#Row2');
+                    while (count-- > 0){
+                        first_row.clone().appendTo('#blacklistgrid');
+                        $('#' + iter).bootstrapToggle();
+                    }
+                    
+                });
+

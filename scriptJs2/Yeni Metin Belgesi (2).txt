@@ -1,0 +1,23 @@
+<div>
+  <img src="https://playcode.io/static/img/logo.png" 
+       alt="PlayCode logo">
+  <h1 id="msg"></h1>
+  
+<div class="container">
+  
+  <div class="inner">
+      <table class="innerTable">
+        <tr class="firstRow">
+          <td>first</td>
+          <td>second</td>
+        </tr>
+      </table>  
+  </div>
+</div>
+
+  <button onclick="myFunction()">Click me</button>
+  <button onclick="myData()">Show Data Array</button>
+  <button onclick="addColumn()">Add Column</button>
+  <button onclick="addRow()">Add Row</button>
+
+</div>
