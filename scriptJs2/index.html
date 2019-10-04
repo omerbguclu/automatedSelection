@@ -20,20 +20,28 @@
       <div class="col-md-12" style="height:150px;overflow:auto;margin-top:5px;">
          <table id="charges" class="table table-hover" width="100%" cellspacing="0" style="border: 1px; height:10px;">
             <thead style="background-color:#CCE5FF">
-               <tr>
-                  <th id="input0">MinAmmount0</th>                  
-                  <th id="addColumn"><button type="button" class="btn btn-success savebtn" style="padding: 6px 12px;margin-left: 40%;" id="addInput">Add New Columnn</button></th>
-                  <th id="editColumn"><button type="button" class="btn btn-success savebtn" style="padding: 6px 12px;margin-left: 40%;" id="editInput">Add New Columnn</button></th>
-                  
+               <tr id="compilerSwitches">
+                  <th></th>
+                  <th id="input0">MinAmmount0</th>
+                  <th id="addColumn"><button type="button" class="btn btn-success savebtn"
+                        style="padding: 6px 12px;margin-left: 40%;" id="addInput">Add New Columnn</button></th>
+
                </tr>
             </thead>
-            <tbody>
+
+            <tbody id="rowCopyorClonetBody">
+               <tr id="rowCopyorClone">
+                  <td id="editColumn">
+                     <button type="button" class="btn btn-success savebtn" style="padding: 6px 12px;margin-left: 40%;"
+                        id="addRow">Add New Project</button>
+                  </td>
+               </tr>
             </tbody>
          </table>
       </div>
    </form>
 
-   
+
 
 
 </body>
