@@ -15,6 +15,7 @@ window.onload = function () {
         $("table#charges thead tr th#addColumn").before(new_Input);
         $("#StringOrBinary").append(new_ToggleButton);
         updateToggle();
+        //updateColumn();
 
         columnCounter++;
     });
@@ -44,11 +45,11 @@ window.onload = function () {
         });
     });
 
-    $(document).on('change', '[id*=toggleButton]', function () {
+    /*$(document).on('change', '[id*=toggleButton]', function () {
         $("[id *= toggleButton]").each(function(){
             console.log($(this).is(":checked"));
         });
-    });
+    });*/
 
     function updateVal(currentEle, value) {
         $(currentEle).html('<input class="thVal" type="text" value="' + value + '" />');
@@ -101,5 +102,34 @@ window.onload = function () {
             });
         });
     };
+
+    //function updateColumn(){
+        $(document).on('change', '[id*=toggleButton]', function () {
+            var columnNumberAttribute = $(this).attr('id');
+            var columnNumberRegex = new RegExp(/(\d+)/);
+            var columnNumber = columnNumberRegex.exec(columnNumberAttribute);
+            var columnState = $(this).is(':checked');
+            console.log(columnState);
+
+            var row = $('#rowCopyorClonetBody > tr');
+            var rowChilds = $('[id*=subProject]');
+            var rowCount = row.length;
+            var tdCount = 0;
+
+            
+
+            if (rowCount > 1) {
+                rowChilds.each(function () {
+                    tdCount = $(this).children('td').length;
+                    //console.log(tdCount);
+                    if(columnState){
+                        $(this).children('#td' + columnNumber[0] + '').html("sad");
+                    }else{
+                        $(this).children('#td' + columnNumber[0] + '').html("sad2");
+                    }
+                });
+            }
+        });
+    //};
 
 }
