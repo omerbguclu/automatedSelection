@@ -11,7 +11,7 @@ window.onload = function () {
         console.log();
         updateRows();
 
-        $("form#chargestableForm div.col-md-12 table#charges thead tr th#addColumn").before(new_Input);
+        $("table#charges thead tr th#addColumn").before(new_Input);
 
         columnCounter++;
     });
@@ -60,11 +60,12 @@ window.onload = function () {
         var row = $('#rowCopyorClonetBody > tr');
         var rowChilds = $('[id*=subProject]');
         var rowCount = row.length;
-        var tdCount = null;
+        var tdCount = 0;
+
         if (rowCount > 1) {
             rowChilds.each(function () {
                 tdCount = $(this).children('td').length;
-                while (tdCount < columnCounter + 1){
+                while (tdCount < columnCounter + 1) {
                     $(this).append('<td id="td' + tdCount + '">' + (tdCount++) + '</td>');
                 }
             })
