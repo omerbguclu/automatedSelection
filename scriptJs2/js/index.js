@@ -5,6 +5,20 @@ window.onload = function () {
     var rowCounter = 0;
     currentRow = null;
 
+    var tripleStateButton = `
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-info btn-sm" name="labels">
+            <input type="radio" name="options" id="option1" value=0 autocomplete="off" checked> FALSE
+        </label>
+        <label class="btn btn-info btn-sm active" name="labels">
+            <input type="radio" name="options" id="option2" value=1 autocomplete="off"> NULL
+        </label>
+        <label class="btn btn-info btn-sm" name="labels">
+            <input type="radio" name="options" id="option3" value=2 autocomplete="off"> TRUE
+        </label>
+    </div>
+    `;
+
     $(document).on('click', 'button#addInput', function () {
         var new_Input = "<th id='input" + columnCounter + "'>MaxAmmount" + columnCounter + "</th>";
         var new_ToggleButton = "<th><input type='checkbox' id='toggleButton" + columnCounter + "' checked></th>";
@@ -123,7 +137,7 @@ window.onload = function () {
                     tdCount = $(this).children('td').length;
                     //console.log(tdCount);
                     if(columnState){
-                        $(this).children('#td' + columnNumber[0] + '').html("sad");
+                        $(this).children('#td' + columnNumber[0] + '').html(tripleStateButton);
                     }else{
                         $(this).children('#td' + columnNumber[0] + '').html("sad2");
                     }
@@ -131,5 +145,25 @@ window.onload = function () {
             }
         });
     //};
+
+    var $labels = $('label[name="labels"]');
+
+    $(document).on('click', '[name=labels]', function (){
+        var $activeButton = $(this);
+        var buttonValue = $(this).children("input").val();
+
+        var colorClasses = ["btn-danger", "btn-info", "btn-success"];
+        
+        $labels.each(function (){
+            var innerButtonValue = $(this).children("input").val();
+            if (buttonValue == innerButtonValue){
+                $activeButton.removeClass("btn-info").addClass(colorClasses[innerButtonValue]);
+            }else{
+                console.log("notPassed");
+                $(this).removeClass(colorClasses[innerButtonValue]).addClass("btn-info");
+            }
+        });
+        
+    });
 
 }
