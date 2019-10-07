@@ -7,11 +7,14 @@ window.onload = function () {
 
     $(document).on('click', 'button#addInput', function () {
         var new_Input = "<th id='input" + columnCounter + "'>MaxAmmount" + columnCounter + "</th>";
+        var new_ToggleButton = "<th><input type='checkbox' id='toggleButton" + columnCounter + "' checked></th>";
 
         console.log();
         updateRows();
 
         $("table#charges thead tr th#addColumn").before(new_Input);
+        $("#StringOrBinary").append(new_ToggleButton);
+        updateToggle();
 
         columnCounter++;
     });
@@ -41,6 +44,11 @@ window.onload = function () {
         });
     });
 
+    $(document).on('change', '[id*=toggleButton]', function () {
+        $("[id *= toggleButton]").each(function(){
+            console.log($(this).is(":checked"));
+        });
+    });
 
     function updateVal(currentEle, value) {
         $(currentEle).html('<input class="thVal" type="text" value="' + value + '" />');
@@ -71,5 +79,27 @@ window.onload = function () {
             })
         }
     }
+
+    $(function () {
+        $('[id*=toggleButton]').bootstrapToggle({
+            on: 'TRUE/FALSE',
+            off: 'STRING',
+            size: 'small',
+            onstyle: 'warning',
+            offstyle: 'info'
+        });
+    });
+
+    function updateToggle() {
+        $(function () {
+            $('[id*=toggleButton]').bootstrapToggle({
+                on: 'TRUE/FALSE',
+                off: 'STRING',
+                size: 'small',
+                onstyle: 'warning',
+                offstyle: 'info'
+            });
+        });
+    };
 
 }
