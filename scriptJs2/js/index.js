@@ -23,13 +23,12 @@ window.onload = function () {
         var new_Input = "<th id='input" + columnCounter + "'>MaxAmmount" + columnCounter + "</th>";
         var new_ToggleButton = "<th><input type='checkbox' id='toggleButton" + columnCounter + "' checked></th>";
 
-        console.log();
-        updateRows();
+        
 
-        $("table#charges thead tr th#addColumn").before(new_Input);
-        $("#StringOrBinary").append(new_ToggleButton);
+        $("th#addColumn").before(new_Input);
+        $("#enabledDisabled").before(new_ToggleButton);
+        updateRows();
         updateToggle();
-        //updateColumn();
 
         columnCounter++;
     });
@@ -37,16 +36,18 @@ window.onload = function () {
     $(document).on('click', 'button#addRow', function () {
         var edited_Input = " ";
 
-        //$("#rowCopyorClone").before("<tr><td>dasd" + columnCounter++ + "</td></tr>");
         $("#rowCopyorClone").before('<tr id="subProjectRow' + rowCounter++ + '">');
         var currentRow = $('[id=subProjectRow' + (rowCounter - 1) + ']')
         for (let index = 0; index < columnCounter; index++) {
-            edited_Input = '<td id="td' + index + '">' + index + '</td>';
+            var columnState = $("[id=toggleButton" + index + "]").is(":checked");
+            if(columnState){
+                edited_Input = '<td id="td' + index + '">' + tripleStateButton + '</td>';
+            }else{
+                edited_Input = '<td id="td' + index + '">' + index + '</td>';                
+            }
             currentRow.append(edited_Input);
-            console.log(edited_Input);
+            //console.log(edited_Input);
         }
-        //$("#rowCopyorClone").before("</tr>");
-        //$("form# chargestableForm div.col - md - 12 table# charges thead tr ")
 
     });
 
@@ -89,7 +90,17 @@ window.onload = function () {
             rowChilds.each(function () {
                 tdCount = $(this).children('td').length;
                 while (tdCount < columnCounter + 1) {
-                    $(this).append('<td id="td' + tdCount + '">' + (tdCount++) + '</td>');
+                    var columnState = $("[id=toggleButton" + tdCount + "]").is(":checked");
+                    console.log("[id=toggleButton" + tdCount + "]");
+                    if(columnState){
+                        console.log("[id=toggleButton" + tdCount + "]");
+                        edited_Input = '<td id="td' + (tdCount++) + '">' + tripleStateButton + '</td>';
+                    }else{
+                        console.log("passed2");
+                        edited_Input = '<td id="td' + tdCount + '">' +(tdCount++) + '</td>'
+                    }
+                    
+                    $(this).append(edited_Input);
                 }
             })
         }
@@ -123,7 +134,7 @@ window.onload = function () {
             var columnNumberRegex = new RegExp(/(\d+)/);
             var columnNumber = columnNumberRegex.exec(columnNumberAttribute);
             var columnState = $(this).is(':checked');
-            console.log(columnState);
+            //console.log(columnState);
 
             var row = $('#rowCopyorClonetBody > tr');
             var rowChilds = $('[id*=subProject]');
@@ -146,9 +157,9 @@ window.onload = function () {
         });
     //};
 
-    var $labels = $('label[name="labels"]');
-
     $(document).on('click', '[name=labels]', function (){
+
+        var $labels = $(this).parent("div").children("label");
         var $activeButton = $(this);
         var buttonValue = $(this).children("input").val();
 
@@ -164,6 +175,25 @@ window.onload = function () {
             }
         });
         
+    });
+
+    $(document).on('change', '#enabledDisabledForControl', function () {
+        var buttonState = $(this).is(":checked");
+        var $thAtt = $("#StringOrBinary").children("th")
+        //console.log($thAtt.length)
+
+
+        $thAtt.each(function (param) {
+            if ($(this).attr("id") != "enabledDisabled" && $(this).attr("id") != "toggleNotChange") {
+                if(buttonState){
+                    $(this).children("div").removeClass("disabled",false);
+                    $("[id*=toggleButton]").attr("disabled",false);
+                }else{
+                    $(this).children("div").addClass("disabled", true);
+                    $("[id*=toggleButton]").attr("disabled",true);
+                }
+            }
+        });
     });
 
 }

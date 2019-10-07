@@ -22,13 +22,14 @@
             style="border: 1px; height:10px;">
             <thead style="background-color:#CCE5FF">
                <tr id="StringOrBinary">
-                  <th><input type="checkbox" id="toggleButton" disabled></th>
+                  <th><input type="checkbox" id="toggleNotChange" data-size="small" data-toggle="toggle" data-off="STRING" data-offstyle="info" disabled></th>
+                  <th class="float-right" id="enabledDisabled">Edit : <input type="checkbox" data-toggle="toggle" data-size="small" checked
+                        id="enabledDisabledForControl"></th>
                </tr>
                <tr id="compilerSwitches">
                   <th id="input0">MinAmmount0</th>
-                  <th id="addColumn"><button type="button" class="btn btn-success savebtn"
-                        style="padding: 6px 12px;margin-left: 40%;" id="addInput">Add New Columnn</button></th>
-
+                  <th id="addColumn"><button type="button" class="btn btn-success savebtn float-right" id="addInput">Add
+                        New Columnn</button></th>
                </tr>
             </thead>
 
@@ -43,20 +44,6 @@
          </table>
       </div>
    </form>
-
-
-   <div class="btn-group btn-group-toggle" data-toggle="buttons">
-      <label class="btn btn-info btn-sm" name="labels">
-         <input type="radio" name="options" id="option1" value=0 autocomplete="off" checked> FALSE
-      </label>
-      <label class="btn btn-info btn-sm active" name="labels">
-         <input type="radio" name="options" id="option2" value=1 autocomplete="off"> NULL
-      </label>
-      <label class="btn btn-info btn-sm" name="labels">
-         <input type="radio" name="options" id="option3" value=2 autocomplete="off"> TRUE
-      </label>
-   </div>
-
 
    <script src="js/jquery-3.3.1.slim.min.js"></script>
    <script src="js/popper.min.js"></script>
