@@ -38,12 +38,12 @@ window.onload = function () {
     $(document).on('click', 'button#addRow', function () {
         var edited_Input = " ";
 
-        $("#rowCopyorClone").before('<tr value=' + rowCounter + ' id="subProjectRow' + rowCounter++ + '">');
+        $("#rowCopyorClone").before('<tr value="' + rowCounter + '" id="subProjectRow' + rowCounter++ + '">');
         var currentRow = $('[id=subProjectRow' + (rowCounter - 1) + ']')
         edited_Input =
             '<td value="' + (rowCounter - 1) + '" id="tdLast' + (rowCounter - 1) + '">' +
-            '<button type="button" value=' + (rowCounter - 1) + ' id="deleteButton' + (rowCounter - 1) + '" class="btn btn-outline-danger float-right" >Delete</button>' +
-            '<button type="button" value=' + (rowCounter - 1) + ' id="cloneButton' + (rowCounter - 1) + '" class="btn btn-outline-success float-right">Clone</button>' +
+            '<button type="button" value="' + (rowCounter - 1) + '" id="deleteButton' + (rowCounter - 1) + '" class="btn btn-outline-danger float-right" >Delete</button>' +
+            '<button type="button" value="' + (rowCounter - 1) + '" id="cloneButton' + (rowCounter - 1) + '" class="btn btn-outline-success float-right">Clone</button>' +
             '</td>';
         currentRow.append(edited_Input);
         currentRow = $("#tdLast" + (rowCounter - 1));
@@ -77,7 +77,7 @@ window.onload = function () {
     });*/
 
     function updateVal(currentEle, value) {
-        $(currentEle).html('<input class="thVal" type="text" value=' + value + '/>');
+        $(currentEle).html('<input class="thVal" type="text" value="' + value + '"/>');
         $(".thVal").focus();
         $(".thVal").keydown(function (event) {
             if (event.keyCode == 13) {
@@ -203,11 +203,11 @@ window.onload = function () {
         $thAtt.each(function () {
             if ($(this).attr("id") != "enabledDisabled" && $(this).attr("id") != "toggleNotChange") {
                 if (buttonState) {
-                    $(this).children("div").removeClass("disabled", false);
-                    $("[id*=toggleButton]").attr("disabled", false);
-                } else {
                     $(this).children("div").addClass("disabled", true);
                     $("[id*=toggleButton]").attr("disabled", true);
+                } else {
+                    $(this).children("div").removeClass("disabled", false);
+                    $("[id*=toggleButton]").attr("disabled", false);
                 }
             }
         });
@@ -227,7 +227,7 @@ window.onload = function () {
                     //console.log(currentElement.attr("id"));
                     var value = currentElement.html();
                     if (buttonState) {
-                        currentElement.html('<input class="thValFirst" type="text" value=' + value + '/>');
+                        currentElement.html('<input class="thValFirst" type="text" value="' + value + '"/>');
                     } else {
                         currentElement.html($(".thValFirst").val());
                     }
@@ -241,7 +241,7 @@ window.onload = function () {
                         var currentElement = $(this).find('td:nth-child(' + toggleCounter + ')');
                         var value = currentElement.html();
                         if (buttonState) {
-                            currentElement.html('<input class="thVal' + (rowCounterForEdit++) + columnCounterForEdit + '" type="text" value=' + value + '/>');
+                            currentElement.html('<input class="thVal' + (rowCounterForEdit++) + columnCounterForEdit + '" type="text" value="' + value + '"/>');
                         } else {
                             currentElement.html($(".thVal" + (rowCounterForEdit++) + columnCounterForEdit).val());
                         }
