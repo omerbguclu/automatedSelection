@@ -6,6 +6,9 @@ window.onload = function () {
     currentRow = null;
     var cloning = true;
     var deleting = false;
+    var compilerSwitchArray = [];
+    var compilerSwitchValue = [];
+    var convertedTextArray = [];
 
     var tripleStateButton = `
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -305,37 +308,39 @@ window.onload = function () {
     }
 
     $(document).on('click', '#convertToText', function () {
+
+        compilerSwitchArray.length = 0;
+        compilerSwitchValue.length = 0;
+        var totalString = "";
+
         $("#compilerSwitches").children("th").each(function () {
             if ($(this).attr("id") == "addColumn") {
                 return false;
             }
+            compilerSwitchArray.push($(this).html());
+
+
             //console.log($(this).html());                                          // Compiler Switches Names
 
         });
-        $("#stringOrBinary").children("th").each(function () {
-            if ($(this).attr("id") == "enabledDisabled") {
-                return false;
-            }
-
-            var isString = $(this.firstChild).hasClass("btn-info");
-
-            if (isString) {
-                //console.log("yes");
-            }
-        });
         if (rowCounter > 0) {
+            compilerSwitchValue.length = 0;
             $("[id*=subProjectRow]").each(function () {
                 $(this).children("td").each(function () {
                     if ($(this).children().length == 0) {                               //Row String Values
                         //console.log($(this).html());
+                        compilerSwitchValue.push($(this).html());
                     } else {                                                            //Row TRUE FALSE NULL Values
                         $(this).children("div").children("label").each(function () {
                             if ($(this).hasClass("active")) {
                                 if ($(this).children("input").attr("value") == 0) {
+                                    compilerSwitchValue.push("FALSE");
                                     //console.log("false");
                                 } else if ($(this).children("input").attr("value") == 1) {
+                                    compilerSwitchValue.push("NULL");
                                     //console.log("null");
                                 } else {
+                                    compilerSwitchValue.push("TRUE");
                                     //console.log("true");
                                 }
                             }
@@ -343,8 +348,28 @@ window.onload = function () {
                     }
                 });
 
+
+            });
+            compilerSwitchValue.forEach(function (element) {
+                console.log("value -> " + element);
             });
         }
+
+        compilerSwitchArray.forEach(function (element) {
+            console.log("array -> " + element);
+        });
+
     });
+    /*$("#stringOrBinary").children("th").each(function () {
+        if ($(this).attr("id") == "enabledDisabled") {
+            return false;
+        }
+ 
+        var isString = $(this.firstChild).hasClass("btn-info");
+ 
+        if (isString) {
+            //console.log("yes");
+        }
+    });*/
 
 }
