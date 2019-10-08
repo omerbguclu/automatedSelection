@@ -38,6 +38,14 @@ window.onload = function () {
 
         $("#rowCopyorClone").before('<tr id="subProjectRow' + rowCounter++ + '">');
         var currentRow = $('[id=subProjectRow' + (rowCounter - 1) + ']')
+        edited_Input =
+            '<td id="tdLast' + (rowCounter - 1) + '">' +
+            '<button type="button" id="deleteButton' + (rowCounter - 1) + '" class="btn btn-outline-danger float-right" >Delete</button>' +
+            '<button type="button" id="cloneButton' + (rowCounter - 1) + '" class="btn btn-outline-success float-right">Clone</button>' +
+            '</td>';
+        currentRow.append(edited_Input);
+        currentRow = $("#tdLast" + (rowCounter - 1));
+
         for (let index = 0; index < columnCounter; index++) {
             var columnState = $("[id=toggleButton" + index + "]").is(":checked");
             if (columnState) {
@@ -45,7 +53,7 @@ window.onload = function () {
             } else {
                 edited_Input = '<td id="td' + index + '">' + index + '</td>';
             }
-            currentRow.append(edited_Input);
+            currentRow.before(edited_Input);
             //console.log(edited_Input);
         }
 
@@ -88,19 +96,28 @@ window.onload = function () {
 
         if (rowCount > 1) {
             rowChilds.each(function () {
-                tdCount = $(this).children('td').length;
+                tdCount = $(this).children('td').length - 1;
                 while (tdCount < columnCounter + 1) {
                     var columnState = $("[id=toggleButton" + tdCount + "]").is(":checked");
-                    console.log("[id=toggleButton" + tdCount + "]");
+                    //console.log("[id=toggleButton" + tdCount + "]");
                     if (columnState) {
-                        console.log("[id=toggleButton" + tdCount + "]");
+                        //console.log("[id=toggleButton" + tdCount + "]");
                         edited_Input = '<td id="td' + (tdCount++) + '">' + tripleStateButton + '</td>';
                     } else {
-                        console.log("passed2");
+                        //console.log("passed2");
                         edited_Input = '<td id="td' + tdCount + '">' + (tdCount++) + '</td>'
                     }
 
-                    $(this).append(edited_Input);
+                    $("[id*=tdLast]").before(edited_Input);
+
+                    /*if (tdCount == columnCounter + 1) {
+                        edited_Input =
+                            '<td id="td' + tdCount + '">' +
+                            '<button type="button" id="td' + tdCount + '" class="btn btn-outline-success">Clone</button>' +
+                            '<button type="button" id="td' + tdCount + '" class="btn btn-outline-danger" >Delete</button>' +
+                            '</td>';
+                        $(this).append(edited_Input);
+                    }*/
                 }
             })
         }
@@ -170,7 +187,7 @@ window.onload = function () {
             if (buttonValue == innerButtonValue) {
                 $activeButton.removeClass("btn-info").addClass(colorClasses[innerButtonValue]);
             } else {
-                console.log("notPassed");
+                //console.log("notPassed");
                 $(this).removeClass(colorClasses[innerButtonValue]).addClass("btn-info");
             }
         });
@@ -199,21 +216,22 @@ window.onload = function () {
         var $subProjectRows = $("[id*=subProjectRow]");
         var subProjectRowCount = $subProjectRows.length;
         var $booleanStringColumns = $("[id*=toggleButton] , #toggleNotChange");
-
+        var columnCounterForEdit = 0;
+        var rowCounterForEdit = 0;
         $booleanStringColumns.each(function () {
-            if ($(this).attr("id") == "toggleNotChange") {
+            if ($(this).attr("id") == "toggleNotChange") { // For ToggleNotChange Button Column
                 $subProjectRows.each(function () {
                     var currentElement = $(this).find("td:first-child");
-                    console.log(currentElement.attr("id"));
+                    //console.log(currentElement.attr("id"));
                     var value = currentElement.html();
                     if (buttonState) {
-                        currentElement.html('<input class="thVal" type="text" value="' + value + '" />');
+                        currentElement.html('<input class="thValFirst" type="text" value="' + value + '" />');
                     } else {
-                        currentElement.html($(".thVal").val());
+                        currentElement.html($(".thValFirst").val());
                     }
                 });
             } else {
-                if (!($(this).is(":checked"))) {
+                if (!($(this).is(":checked"))) { // For SubProject Rows
                     var toggleRegex = /(\d+)/.exec($(this).attr("id"));
                     var toggleCounter = parseInt(toggleRegex[0]) + 1;
                     //var value = currentElement.html();
@@ -221,18 +239,23 @@ window.onload = function () {
                         var currentElement = $(this).find('td:nth-child(' + toggleCounter + ')');
                         var value = currentElement.html();
                         if (buttonState) {
-                            currentElement.html('<input class="thVal" type="text" value="' + value + '" />');
+                            currentElement.html('<input class="thVal' + (rowCounterForEdit++) + columnCounterForEdit + '" type="text" value="' + value + '" />');
                         } else {
-                            currentElement.html($(".thVal").val());
+                            currentElement.html($(".thVal" + (rowCounterForEdit++) + columnCounterForEdit).val());
                         }
                     });
                 }
             }
+            columnCounterForEdit++;
         });
-        /*
-
-        */
 
     }
+
+    $(document).on('click','[id*=clone]', function(){
+        console.log("clonelandın -> " + $(this).attr("id"));
+    });
+    $(document).on('click','[id*=delete]', function(){
+        console.log("deletelendin -> " + $(this).attr("id"));
+    });
 
 }
