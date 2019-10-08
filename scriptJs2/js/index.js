@@ -4,6 +4,8 @@ window.onload = function () {
     var columnCounter = 1;
     var rowCounter = 0;
     currentRow = null;
+    var increasing = true;
+    var decreasing = false;
 
     var tripleStateButton = `
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -36,12 +38,12 @@ window.onload = function () {
     $(document).on('click', 'button#addRow', function () {
         var edited_Input = " ";
 
-        $("#rowCopyorClone").before('<tr id="subProjectRow' + rowCounter++ + '">');
+        $("#rowCopyorClone").before('<tr value=' + rowCounter + ' id="subProjectRow' + rowCounter++ + '">');
         var currentRow = $('[id=subProjectRow' + (rowCounter - 1) + ']')
         edited_Input =
-            '<td id="tdLast' + (rowCounter - 1) + '">' +
-            '<button type="button" id="deleteButton' + (rowCounter - 1) + '" class="btn btn-outline-danger float-right" >Delete</button>' +
-            '<button type="button" id="cloneButton' + (rowCounter - 1) + '" class="btn btn-outline-success float-right">Clone</button>' +
+            '<td value="' + (rowCounter - 1) + '" id="tdLast' + (rowCounter - 1) + '">' +
+            '<button type="button" value=' + (rowCounter - 1) + ' id="deleteButton' + (rowCounter - 1) + '" class="btn btn-outline-danger float-right" >Delete</button>' +
+            '<button type="button" value=' + (rowCounter - 1) + ' id="cloneButton' + (rowCounter - 1) + '" class="btn btn-outline-success float-right">Clone</button>' +
             '</td>';
         currentRow.append(edited_Input);
         currentRow = $("#tdLast" + (rowCounter - 1));
@@ -49,9 +51,9 @@ window.onload = function () {
         for (let index = 0; index < columnCounter; index++) {
             var columnState = $("[id=toggleButton" + index + "]").is(":checked");
             if (columnState) {
-                edited_Input = '<td id="td' + index + '">' + tripleStateButton + '</td>';
+                edited_Input = '<td value="' + index + '" id="td' + index + '">' + tripleStateButton + '</td>';
             } else {
-                edited_Input = '<td id="td' + index + '">' + index + '</td>';
+                edited_Input = '<td value="' + index + '" id="td' + index + '">' + index + '</td>';
             }
             currentRow.before(edited_Input);
             //console.log(edited_Input);
@@ -75,7 +77,7 @@ window.onload = function () {
     });*/
 
     function updateVal(currentEle, value) {
-        $(currentEle).html('<input class="thVal" type="text" value="' + value + '" />');
+        $(currentEle).html('<input class="thVal" type="text" value=' + value + '/>');
         $(".thVal").focus();
         $(".thVal").keydown(function (event) {
             if (event.keyCode == 13) {
@@ -102,10 +104,10 @@ window.onload = function () {
                     //console.log("[id=toggleButton" + tdCount + "]");
                     if (columnState) {
                         //console.log("[id=toggleButton" + tdCount + "]");
-                        edited_Input = '<td id="td' + (tdCount++) + '">' + tripleStateButton + '</td>';
+                        edited_Input = '<td value="' + tdCount + '" id="td' + (tdCount++) + '">' + tripleStateButton + '</td>';
                     } else {
                         //console.log("passed2");
-                        edited_Input = '<td id="td' + tdCount + '">' + (tdCount++) + '</td>'
+                        edited_Input = '<td value="' + tdCount + '" id="td' + tdCount + '">' + (tdCount++) + '</td>'
                     }
 
                     $("[id*=tdLast]").before(edited_Input);
@@ -167,7 +169,7 @@ window.onload = function () {
                 if (columnState) {
                     $(this).children('#td' + columnNumber[0] + '').html(tripleStateButton);
                 } else {
-                    $(this).children('#td' + columnNumber[0] + '').html("sad2");
+                    $(this).children('#td' + columnNumber[0] + '').html("String");
                 }
             });
         }
@@ -194,7 +196,7 @@ window.onload = function () {
 
     });
 
-    $(document).on('change', '#enabledDisabledForControl', function () {
+    $(document).on('change', '#enabledDisabledForControl', function () {//Edit Button */*/
         var buttonState = $(this).is(":checked");
         var $thAtt = $("#StringOrBinary").children("th");
 
@@ -225,7 +227,7 @@ window.onload = function () {
                     //console.log(currentElement.attr("id"));
                     var value = currentElement.html();
                     if (buttonState) {
-                        currentElement.html('<input class="thValFirst" type="text" value="' + value + '" />');
+                        currentElement.html('<input class="thValFirst" type="text" value=' + value + '/>');
                     } else {
                         currentElement.html($(".thValFirst").val());
                     }
@@ -239,7 +241,7 @@ window.onload = function () {
                         var currentElement = $(this).find('td:nth-child(' + toggleCounter + ')');
                         var value = currentElement.html();
                         if (buttonState) {
-                            currentElement.html('<input class="thVal' + (rowCounterForEdit++) + columnCounterForEdit + '" type="text" value="' + value + '" />');
+                            currentElement.html('<input class="thVal' + (rowCounterForEdit++) + columnCounterForEdit + '" type="text" value=' + value + '/>');
                         } else {
                             currentElement.html($(".thVal" + (rowCounterForEdit++) + columnCounterForEdit).val());
                         }
@@ -251,11 +253,103 @@ window.onload = function () {
 
     }
 
-    $(document).on('click','[id*=clone]', function(){
-        console.log("clonelandın -> " + $(this).attr("id"));
+    $(document).on('click', '[id*=clone]', function () {
+        var rowNumber = $(this).val();
+        var newRowNumber = parseInt(rowNumber) + 1;
+        selectedRow = $("#subProjectRow" + rowNumber);
+        //clonedRow = $("#subProjectRow" + $(this).val()).clone();
+        //console.log(clonedRow.attr("id"));
+        //clonedRow.attr("id","subProjectRow" + newRowNumber)
+        //console.log(clonedRow.attr("id"));
+        //selectedRow.after(clonedRow);
+        //columnCounter++;
+        /*console.log("RowNumber is -> " + rowNumber + "\n");
+        console.log("NewRowNumber is -> " + newRowNumber + "\n");
+        console.log("selectedRow is -> " + selectedRow.attr("id") + "\n");*/
+
+        clonedRow = updateIdNumbers(rowNumber, increasing);
+        selectedRow.after(clonedRow);
+        //console.log(clonedRow + "\n");
+
     });
-    $(document).on('click','[id*=delete]', function(){
+    $(document).on('click', '[id*=delete]', function () {
         console.log("deletelendin -> " + $(this).attr("id"));
     });
+
+    function updateIdNumbers(selectedCloneButtonRowValue, booleanValue) {
+
+        if (booleanValue) {
+            var clonedRow = null;
+            $("[id*=subProjectRow]").each(function () {
+                var eachSubProjectRowValue = $(this).attr("value");
+                //console.log(eachSubProjectRowValue+"\n");
+
+                if (eachSubProjectRowValue == selectedCloneButtonRowValue) {
+                    var newRowNumber = parseInt(eachSubProjectRowValue) + 1;
+                    clonedRow = $(this).clone();
+                    updateValuesAndIds(clonedRow, newRowNumber);
+
+
+
+                    //console.log("value is ->->-> "+$(this).attr("value"));
+                    //console.log("id is ->->-> " +$(this).attr("id"));
+                    updateValuesAndIds(clonedRow.children('td').last(), newRowNumber);
+
+                    /*clonedRow.children('td').each(function () {
+                        console.log("new value is ->->-> " + $(this).attr("value"));
+                        console.log("new id is ->->-> " + $(this).attr("id"));                        
+                    });*/
+
+                    //console.log(clonedRow.children("td").last().attr("id"));
+                    clonedRow.children("td").last().children("button").each(function () {
+                        //console.log($(this).attr("id"));
+                        //console.log($(this).attr("value"));
+                        updateValuesAndIds($(this), newRowNumber);
+                    });
+                    //console.log(clonedRow.children("td").last().attr("id"));
+                    //console.log(clonedRow);
+
+                    /*clonedRow.children("td").last().children("button").each(function () {
+                        console.log($(this).attr("id"));
+                        console.log($(this).attr("value"));
+                    });*/
+
+                    //console.log($(clonedRow).attr("id"));
+                    //console.log($(clonedRow).attr("value"));
+                    rowCounter++;
+
+                } else if (eachSubProjectRowValue > selectedCloneButtonRowValue) {
+                    console.log(eachSubProjectRowValue + " \n");
+                    console.log(selectedCloneButtonRowValue);
+
+                    var newRowNumber = parseInt($(this).attr("value")) + 1;
+                    updateValuesAndIds($(this), newRowNumber);
+                    updateValuesAndIds($(this).children('td').last(), newRowNumber);
+                    $(this).children("td").last().children("button").each(function () {
+                        updateValuesAndIds($(this), newRowNumber);
+                    });
+
+                }
+            });
+            return clonedRow;
+        } else {
+
+        }
+
+
+    }
+
+    function getIdStringWithoutNumber(selectedObject) {
+        return (/(\D+)/.exec($(selectedObject).attr("id")))[0];
+    }
+
+    function getIdNumberWithoutString(selectedObject) {
+        return parseInt((/(\d+)/.exec($(selectedObject).attr("id")))[0]);
+    }
+
+    function updateValuesAndIds(selectedObject, newRowNumber) {
+        selectedObject.attr("value", newRowNumber);//Increase subProject Value
+        selectedObject.attr("id", getIdStringWithoutNumber(selectedObject) + (getIdNumberWithoutString(selectedObject) + 1));//Increase subProject Id
+    }
 
 }
