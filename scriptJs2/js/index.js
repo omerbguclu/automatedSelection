@@ -32,6 +32,8 @@ window.onload = function () {
         updateRows();
         updateToggle();
 
+        $("#converToTextTd").before("<td></td>");
+
         columnCounter++;
     });
 
@@ -274,7 +276,7 @@ window.onload = function () {
                 if (eachSubProjectRowValue > selectedCloneButtonRowValue) { // Updating Other Row Values and Ids
 
                     var newRowNumber = parseInt($(this).attr("value")) - 1;
-                    updateValuesAndIds($(this), newRowNumber,deleting);
+                    updateValuesAndIds($(this), newRowNumber, deleting);
                     updateValuesAndIds($(this).children('td').last(), newRowNumber, deleting);
                     $(this).children("td").last().children("button").each(function () {
                         updateValuesAndIds($(this), newRowNumber, deleting);
@@ -298,9 +300,51 @@ window.onload = function () {
         if (booleanValue) {
             selectedObject.attr("id", getIdStringWithoutNumber(selectedObject) + (getIdNumberWithoutString(selectedObject) + 1));//Increase subProject Id
         } else {
-
             selectedObject.attr("id", getIdStringWithoutNumber(selectedObject) + (getIdNumberWithoutString(selectedObject) - 1));//Increase subProject Id
         }
     }
+
+    $(document).on('click', '#convertToText', function () {
+        $("#compilerSwitches").children("th").each(function () {
+            if ($(this).attr("id") == "addColumn") {
+                return false;
+            }
+            //console.log($(this).html());                                          // Compiler Switches Names
+
+        });
+        $("#stringOrBinary").children("th").each(function () {
+            if ($(this).attr("id") == "enabledDisabled") {
+                return false;
+            }
+
+            var isString = $(this.firstChild).hasClass("btn-info");
+
+            if (isString) {
+                //console.log("yes");
+            }
+        });
+        if (rowCounter > 0) {
+            $("[id*=subProjectRow]").each(function () {
+                $(this).children("td").each(function () {
+                    if ($(this).children().length == 0) {                               //Row String Values
+                        //console.log($(this).html());
+                    } else {                                                            //Row TRUE FALSE NULL Values
+                        $(this).children("div").children("label").each(function () {
+                            if ($(this).hasClass("active")) {
+                                if ($(this).children("input").attr("value") == 0) {
+                                    //console.log("false");
+                                } else if ($(this).children("input").attr("value") == 1) {
+                                    //console.log("null");
+                                } else {
+                                    //console.log("true");
+                                }
+                            }
+                        });
+                    }
+                });
+
+            });
+        }
+    });
 
 }
