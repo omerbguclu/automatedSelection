@@ -9,6 +9,8 @@ window.onload = function () {
     var compilerSwitchArray = [];
     var compilerSwitchValue = [];
     var convertedTextArray = [];
+    var temporaryArray = [];
+    var nameOfProjectArray = [];
 
     var tripleStateButton = `
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -173,16 +175,22 @@ window.onload = function () {
 
     $(document).on('change', '#enabledDisabledForControl', function () {//Edit Button */*/
         var buttonState = $(this).is(":checked");
-        var $thAtt = $("#StringOrBinary").children("th");
+        var $thAtt = $("#stringOrBinary").children("th");
 
         $thAtt.each(function () {
             if ($(this).attr("id") != "enabledDisabled" && $(this).attr("id") != "toggleNotChange") {
                 if (buttonState) {
                     $(this).children("div").addClass("disabled", true);
                     $("[id*=toggleButton]").attr("disabled", true);
+                    $("[id=addInput]").attr("disabled", true);
+                    $("[id=addRow]").attr("disabled", true);
+                    $("[id=convertToText]").attr("disabled", true);
                 } else {
                     $(this).children("div").removeClass("disabled", false);
                     $("[id*=toggleButton]").attr("disabled", false);
+                    $("[id=addInput]").attr("disabled", false);
+                    $("[id=addRow]").attr("disabled", false);
+                    $("[id=convertToText]").attr("disabled", false);
                 }
             }
         });
@@ -309,9 +317,17 @@ window.onload = function () {
 
     $(document).on('click', '#convertToText', function () {
 
+        $("#output").html("");
+
+        // Clearing Arrays
         compilerSwitchArray.length = 0;
         compilerSwitchValue.length = 0;
-        var totalString = "";
+        convertedTextArray.length = 0;
+        nameOfProjectArray.length = 0;
+        temporaryArray.length = 0;
+
+        var nameOfProject = "";
+        var output = "";
 
         $("#compilerSwitches").children("th").each(function () {
             if ($(this).attr("id") == "addColumn") {
@@ -324,42 +340,111 @@ window.onload = function () {
 
         });
         if (rowCounter > 0) {
-            compilerSwitchValue.length = 0;
+            temporaryArray.length = 0;
             $("[id*=subProjectRow]").each(function () {
                 $(this).children("td").each(function () {
                     if ($(this).children().length == 0) {                               //Row String Values
                         //console.log($(this).html());
-                        compilerSwitchValue.push($(this).html());
+                        temporaryArray.push($(this).html());
                     } else {                                                            //Row TRUE FALSE NULL Values
                         $(this).children("div").children("label").each(function () {
                             if ($(this).hasClass("active")) {
                                 if ($(this).children("input").attr("value") == 0) {
-                                    compilerSwitchValue.push("FALSE");
+                                    temporaryArray.push("FALSE");
                                     //console.log("false");
                                 } else if ($(this).children("input").attr("value") == 1) {
-                                    compilerSwitchValue.push("NULL");
+                                    temporaryArray.push("NULL");
                                     //console.log("null");
                                 } else {
-                                    compilerSwitchValue.push("TRUE");
+                                    temporaryArray.push("TRUE");
                                     //console.log("true");
                                 }
                             }
                         });
                     }
                 });
-
+                compilerSwitchValue[compilerSwitchValue.length] = [...temporaryArray];
+                temporaryArray.length = 0;
 
             });
-            compilerSwitchValue.forEach(function (element) {
+            /*compilerSwitchValue.forEach(function (element) {
                 console.log("value -> " + element);
-            });
+            });*/
         }
 
-        compilerSwitchArray.forEach(function (element) {
-            console.log("array -> " + element);
+        compilerSwitchValue.forEach(function (innerArray, index) {
+            var compilerOption = "";
+            innerArray.forEach(function (param, indexOfInnerArray) {
+                if (param != "NULL") {
+                    compilerOption = compilerOption + "-d" + compilerSwitchArray[indexOfInnerArray] + "=" + param + " ";
+                }
+
+                if (indexOfInnerArray == innerArray.length - 1) {
+                    compilerOption = compilerOption.slice(0, -1);
+                }
+
+
+                if (indexOfInnerArray == 0) {
+                    nameOfProject = nameOfProject + param + "_";
+                } else if ((param == "TRUE") && (indexOfInnerArray != compilerSwitchArray.length - 1)) {
+                    nameOfProject = nameOfProject + compilerSwitchArray[indexOfInnerArray].slice(0, 4) + "_";
+                } else if (indexOfInnerArray == compilerSwitchArray.length - 1) {
+                    if (param == "TRUE") {
+                        nameOfProject = nameOfProject + compilerSwitchArray[indexOfInnerArray].slice(0, 4) + "_";
+                    }
+
+                    if (compilerSwitchValue[index][1] != "TRUE" && compilerSwitchValue[index][1] != "NULL" && compilerSwitchValue[index][1] != "FALSE") {
+                        nameOfProject = nameOfProject + compilerSwitchValue[index][1];
+                        //console.log(compilerSwitchValue[index][1]);
+                    } else {
+                        nameOfProject = nameOfProject.slice(0, -1);
+                    }
+                }
+
+                //temporaryArray.push(compilerOption);
+                //console.log("array -> " + param);
+            });
+            nameOfProjectArray.push(nameOfProject);
+            convertedTextArray.push(compilerOption);
+            nameOfProject = "";
         });
 
+        //console.log("array -> " + nameOfProjectArray);
+        convertedTextArray.forEach(function (element, index) {
+
+            /*if (index == 0){
+                output = "'";
+            } else if (index == convertedTextArray.length - 1){
+
+            }*/
+            output = output + "'" + element + "' : '" + nameOfProjectArray[index] + "'";
+            if (index != convertedTextArray.length - 1)
+                output = output + ",<br>";
+        });
+
+        var outputHtml = `
+        <table id="outputForm" data-toggle="table" class=" table table-hover" width="100%" cellspacing="0"
+            style="border: 1px; height:10px; min-width:600px; max-width:1720px; width:auto; margin:auto;">
+            <thead style="background-color:#CCE5FF">
+                <tr>
+                    <th>Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>`+ output +`</td>
+                </tr>
+            </tbody>
+        </table>
+        `;
+        if ($("#outputForm").length){
+            $("#outputForm").remove();
+        }
+        $("#chargestableForm").after(outputHtml);
+        console.log(output);
+
     });
+    //console.log("array -> " + temporaryArray);
     /*$("#stringOrBinary").children("th").each(function () {
         if ($(this).attr("id") == "enabledDisabled") {
             return false;

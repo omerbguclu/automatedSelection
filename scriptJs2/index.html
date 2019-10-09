@@ -12,12 +12,27 @@
 
    <script type="text/javascript" src="js/index.js"></script>
 
+   <style>
+      pre.prettyprint {
+      border:0;
+      background-color:#f0e4e4;
+      }
+      .panel-heading{
+         border:1;
+         border: #000000;
+         background-color:#ffeeee;
+      }
+      .panel-body{
+         border:1;
+         background: #754e4e;
+      }
+   </style>
 </head>
 
 <body>
 
    <form class="form-horizontal" role="form" id="chargestableForm">
-      <div class="col-md-12" style="overflow:auto;margin-top:5px;">
+      <div class="col-md-12" style="overflow:auto;margin-top:5px;" id="formDivFirst">
          <table id="charges" data-toggle="table" class=" table table-hover" width="100%" cellspacing="0"
             style="border: 1px; height:10px;">
             <thead style="background-color:#CCE5FF">
@@ -25,7 +40,7 @@
                   <th><input type="checkbox" id="toggleNotChange" id="toggleButton" data-size="small"
                         data-toggle="toggle" data-off="STRING" data-offstyle="info" disabled></th>
                   <th class="float-right" id="enabledDisabled">Edit : <input type="checkbox" data-toggle="toggle"
-                        data-size="small" checked id="enabledDisabledForControl"></th>
+                        data-size="small" id="enabledDisabledForControl"></th>
                </tr>
                <tr id="compilerSwitches">
                   <th id="input0">MinAmmount0</th>
@@ -49,6 +64,7 @@
          </table>
       </div>
    </form>
+
 
    <script src="js/jquery-3.3.1.slim.min.js"></script>
    <script src="js/popper.min.js"></script>
