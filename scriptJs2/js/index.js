@@ -11,7 +11,6 @@ window.onload = function () {
     var convertedTextArray = [];
     var temporaryArray = [];
     var nameOfProjectArray = [];
-    var output = "";
 
     var tripleStateButton = `
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -330,7 +329,8 @@ window.onload = function () {
         convertedTextArray.length = 0;
         nameOfProjectArray.length = 0;
         temporaryArray.length = 0;
-
+        
+        var output = "";
         var nameOfProject = "";
 
         $("#compilerSwitches").children("th").each(function () {
@@ -447,20 +447,18 @@ window.onload = function () {
             </tbody>
         </table>
         `;
-        if ($("#outputForm").length){
-            $("#outputForm").remove();
-        }
+
+        $("#outputForm").remove();
+
         $("#chargestableForm").after(outputHtml);
-        //console.log(output);
-        //$('#copy-button').tooltip();
+
 
     });
 
     $(document).on('click', '#copy-button',function () {
         var $temp = $("<textarea>");
-        var brRegex = /<br\s*[\/]?>/gi;
         $("body").append($temp);
-        $temp.val($("#outputCopy").html().replace(brRegex, "\r\n")).select();
+        $temp.val($("#outputCopy").html().replace(/<br\s*[\/]?>/gi, "\r\n")).select();
         document.execCommand("copy");
         $temp.remove();
     });
