@@ -27,7 +27,7 @@ window.onload = function () {
     `;
 
     $(document).on('click', 'button#addInput', function () {
-        var new_Input = "<th id='input" + columnCounter + "'>Option" + columnCounter + "</th>";
+        var new_Input = "<th title='Double Click For Edit' id='input" + columnCounter + "'>Option" + columnCounter + "</th>";
         var new_ToggleButton = "<th><input type='checkbox' id='toggleButton" + columnCounter + "' checked></th>";
 
 
@@ -452,6 +452,12 @@ window.onload = function () {
 
         $("#chargestableForm").after(outputHtml);
 
+        if($("#outputCopy").html() == ""){//remove output form if it is null
+            $("#outputForm").remove();
+        }
+
+        $("#copy-button").tooltip();
+        
 
     });
 
