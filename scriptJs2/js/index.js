@@ -27,7 +27,7 @@ window.onload = function () {
     `;
 
     $(document).on('click', 'button#addInput', function () {
-        var new_Input = "<th id='input" + columnCounter + "'>MaxAmmount" + columnCounter + "</th>";
+        var new_Input = "<th id='input" + columnCounter + "'>Option" + columnCounter + "</th>";
         var new_ToggleButton = "<th><input type='checkbox' id='toggleButton" + columnCounter + "' checked></th>";
 
 
@@ -185,12 +185,16 @@ window.onload = function () {
                     $("[id=addInput]").attr("disabled", true);
                     $("[id=addRow]").attr("disabled", true);
                     $("[id=convertToText]").attr("disabled", true);
+                    $("[id*=Button]").attr("disabled", true);
+                    //$("[id*=button]").attr("disabled", true);
                 } else {
                     $(this).children("div").removeClass("disabled", false);
                     $("[id*=toggleButton]").attr("disabled", false);
                     $("[id=addInput]").attr("disabled", false);
                     $("[id=addRow]").attr("disabled", false);
                     $("[id=convertToText]").attr("disabled", false);
+                    $("[id*=cloneButton]").attr("disabled", false);
+                    $("[id*=deleteButton]").attr("disabled", false);
                 }
             }
         });
@@ -427,12 +431,18 @@ window.onload = function () {
             style="border: 1px; height:10px; min-width:600px; max-width:1720px; width:auto; margin:auto;">
             <thead style="background-color:#CCE5FF">
                 <tr>
-                    <th>Output</th>
+                    <th>Output
+                    <button type="button" class="btn btn-light btn-copy float-right" data-toggle="tooltip" title="Copy to clipboard" style="display: inline-block;vertical-align: middle;" id="copy-button">
+                        <svg class="icon" style="width:12px;height:12px;" viewBox="0 0 24 24">
+                            <path d="M17,9H7V7H17M17,13H7V11H17M14,17H7V15H14M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z" />
+                        </svg>
+                    </button>
+                   </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>`+ output +`</td>
+                    <td id="outputCopy">`+ output +`</td>
                 </tr>
             </tbody>
         </table>
@@ -441,9 +451,15 @@ window.onload = function () {
             $("#outputForm").remove();
         }
         $("#chargestableForm").after(outputHtml);
-        console.log(output);
+        //console.log(output);
 
     });
+
+    $(document).on('click', '#copy-button',function () {
+        $('#outputCopy').select();
+        document.execCommand("copy");
+    });
+
     //console.log("array -> " + temporaryArray);
     /*$("#stringOrBinary").children("th").each(function () {
         if ($(this).attr("id") == "enabledDisabled") {
