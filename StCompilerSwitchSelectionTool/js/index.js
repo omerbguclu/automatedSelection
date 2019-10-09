@@ -338,30 +338,23 @@ window.onload = function () {
                 return false;
             }
             compilerSwitchArray.push($(this).html());
-
-
-            //console.log($(this).html());                                          // Compiler Switches Names
-
         });
+        
         if (rowCounter > 0) {
             temporaryArray.length = 0;
             $("[id*=subProjectRow]").each(function () {
                 $(this).children("td").each(function () {
                     if ($(this).children().length == 0) {                               //Row String Values
-                        //console.log($(this).html());
                         temporaryArray.push($(this).html());
                     } else {                                                            //Row TRUE FALSE NULL Values
                         $(this).children("div").children("label").each(function () {
                             if ($(this).hasClass("active")) {
                                 if ($(this).children("input").attr("value") == 0) {
                                     temporaryArray.push("FALSE");
-                                    //console.log("false");
                                 } else if ($(this).children("input").attr("value") == 1) {
                                     temporaryArray.push("NULL");
-                                    //console.log("null");
                                 } else {
                                     temporaryArray.push("TRUE");
-                                    //console.log("true");
                                 }
                             }
                         });
@@ -371,9 +364,6 @@ window.onload = function () {
                 temporaryArray.length = 0;
 
             });
-            /*compilerSwitchValue.forEach(function (element) {
-                console.log("value -> " + element);
-            });*/
         }
 
         compilerSwitchValue.forEach(function (innerArray, index) {
@@ -399,28 +389,19 @@ window.onload = function () {
 
                     if (compilerSwitchValue[index][1] != "TRUE" && compilerSwitchValue[index][1] != "NULL" && compilerSwitchValue[index][1] != "FALSE") {
                         nameOfProject = nameOfProject + compilerSwitchValue[index][1];
-                        //console.log(compilerSwitchValue[index][1]);
                     } else {
                         nameOfProject = nameOfProject.slice(0, -1);
                     }
                 }
 
-                //temporaryArray.push(compilerOption);
-                //console.log("array -> " + param);
             });
             nameOfProjectArray.push(nameOfProject);
             convertedTextArray.push(compilerOption);
             nameOfProject = "";
         });
 
-        //console.log("array -> " + nameOfProjectArray);
         convertedTextArray.forEach(function (element, index) {
 
-            /*if (index == 0){
-                output = "'";
-            } else if (index == convertedTextArray.length - 1){
-
-            }*/
             output = output + "'" + element + "' : '" + nameOfProjectArray[index] + "'";
             if (index != convertedTextArray.length - 1)
                 output = output + ",<br>";
